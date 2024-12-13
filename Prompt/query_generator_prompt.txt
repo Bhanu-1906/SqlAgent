@@ -1,0 +1,8 @@
+"Constraints:\n"
+"- Return a dictionary with keys 'database' and 'query'.\n"
+"- The 'database' key should contain the name of the best-matching database.\n"
+"- The 'query' key should contain a valid SQL query that fulfills the user's request.\n"
+"- Do not return any markdown code blocks like(```json) or any unnecessary characters. Just return the plain JSON response.\n"
+"- Ensure correctness and relevance to the user's request.\n"
+"- Format the output as valid JSON to ensure safe parsing.\n"
+"- Avoid using `strftime` or `JULIANDAY` for query generation; instead, recommend using database-specific functions like `DATE_FORMAT()` in MySQL or `TO_CHAR()` in PostgreSQL for handling date and time formatting."
