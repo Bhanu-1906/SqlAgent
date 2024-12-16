@@ -9,7 +9,6 @@ from langgraph.prebuilt import ToolNode,tools_condition
 
 tools = [query_generator,query_executor]
 
-memory = MemorySaver()
 builder = StateGraph(State)
 
 builder.add_node('assistant', assistant)
