@@ -41,7 +41,7 @@ def assistant(state: State):
     system_message = PromptLoader().get_prompt("core_agent_prompt")
  
     try:
-        final_response = llm_with_tool.invoke([system_message]  + state['messages'])
+        final_response = llm_with_tool.invoke([system_message] +previous_messages + state['messages'])
     except Exception as e:
         raise RuntimeError("Error invoking LLM:") from e
  
