@@ -34,21 +34,6 @@ def query_generator(user_query: str):
     Note:
         This tool will automatically fetch the database schema (`table_info`) dynamically without requiring additional input.
     """
-    # sql_prompt = (
-    #     "<database>mysql\n"
-    #     "<table_info>\n"
-    #     "Based on the following database schema, find the best-matching database and generate an SQL query:\n"
-    # )
- 
-    # sql_prompt += (str(fetch()))
-    print(res)
-    # sql_prompt = (res)
- 
-    # sql_prompt += (
-    #     f"<user_query>\n{user_query}\n"      
-    # )
-    
-    # sql_prompt+=(PromptLoader().get_prompt("query_generator_prompt"))
     sql_prompt = (
         f"<database_schema>\n{res}\n</database_schema>\n"
         f"<user_query>\n{user_query}\n</user_query>\n"
