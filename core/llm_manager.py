@@ -16,9 +16,9 @@ class LLMManger:
  
     def bind_tools(self, tools: list) -> Runnable:
         try:
-            return self.llm.bind(tools=tools)
+            return self.llm.bind_tools(tools=tools)
         except Exception as e:
             print(f"Error binding tools: {e}")
-            raise
+            
     def invoke(self,message):
         return self.llm.invoke(message)

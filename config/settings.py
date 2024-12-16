@@ -7,7 +7,7 @@ class AppSettings(BaseSettings):
     DB_PASSWORD: str
     DB_NAME: str
     DB_PORT_NUMBER:str
-    
+   
     model_config = SettingsConfigDict(
         env_file=".env",    # Path to the `.env` file.
         extra="ignore"      # Ignore extra environment variables not listed here.
@@ -15,3 +15,4 @@ class AppSettings(BaseSettings):
  
 # Initialize settings
 Appsettings = AppSettings()
+ 

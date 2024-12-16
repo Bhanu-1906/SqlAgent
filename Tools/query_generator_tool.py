@@ -41,13 +41,20 @@ def query_generator(user_query: str):
     # )
  
     # sql_prompt += (str(fetch()))
-    sql_prompt = (res)
+    print(res)
+    # sql_prompt = (res)
  
-    sql_prompt += (
-        f"<user_query>\n{user_query}\n"      
-    )
+    # sql_prompt += (
+    #     f"<user_query>\n{user_query}\n"      
+    # )
     
-    sql_prompt+=(PromptLoader().get_prompt("query_generator_prompt"))
+    # sql_prompt+=(PromptLoader().get_prompt("query_generator_prompt"))
+    sql_prompt = (
+        f"<database_schema>\n{res}\n</database_schema>\n"
+        f"<user_query>\n{user_query}\n</user_query>\n"
+        + PromptLoader().get_prompt("query_generator_prompt")
+    )
+
  
     try:
         llm_response = llm.invoke(sql_prompt).content
@@ -77,4 +84,3 @@ def query_generator(user_query: str):
     except Exception as e:
         return {"error": str(e), "user_query": user_query, "messages": [str(e)]}
  
-           

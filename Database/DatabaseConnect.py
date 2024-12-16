@@ -264,15 +264,16 @@ class DatabaseConnection:
 if __name__ == "__main__":
     try:
         db = DatabaseConnection(
-            username='avnadmin', 
-            password='AVNS_hcHLxiEmLVsprkffH_5', 
-            hostname='postg-1-harikrishna-7c5f.i.aivencloud.com', 
-            port='21911', 
-            dialect='postgresql'
+            username='root', 
+            password='Alliswell#1906', 
+            hostname='127.0.0.1', 
+            port='3306', 
+            dialect='mysql'
         )
-        
+        result = db.get_all_databases_metadata()
+
         print("\nDatabase Metadata:")
-        print(db.get_all_databases_metadata())
+        print(result)
     
     except Exception as e:
         print(f"An error occurred: {e}")

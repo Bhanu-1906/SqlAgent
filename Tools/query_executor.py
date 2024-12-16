@@ -3,7 +3,7 @@ from Database import DatabaseConnect
 
 
 @tool
-def query_executor(query: str):
+def query_executor(query: str,database:str):
     """
     Executes a given SQL query on the database and handles both SELECT and non-SELECT operations.
 
@@ -24,7 +24,7 @@ def query_executor(query: str):
         d = DatabaseConnect.DatabaseConnection("root", "Alliswell#1906", "127.0.0.1", "3306", "mysql")
         query = query.replace('\\', '')
  
-        result = d.execute_query(query=query, database_name="employees")
+        result = d.execute_query(query=query, database_name=database)
  
         if result.returns_rows:
             rows = result.fetchall()
