@@ -6,7 +6,7 @@ from core.llm_manager import LLMManger
 from Prompt.prompt_loader import PromptLoader
 
 
-conn = DatabaseConnect.DatabaseConnection("root", "Alliswell#1906", "127.0.0.1", "3306", "mysql")
+conn = DatabaseConnect.DatabaseConnection("root", "Alliswell#1906", "127.0.0.1", "3306", "mysql","")
 res = conn.get_all_databases_metadata()
 llm = LLMManger()
 
