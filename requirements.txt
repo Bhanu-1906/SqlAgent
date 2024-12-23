@@ -1,0 +1,9 @@
+langgraph
+langchain
+python-dotenv
+mysql-connector-python
+typing-extensions
+langchain_google_community
+langchain_google_genai
+pymysql
+ 
