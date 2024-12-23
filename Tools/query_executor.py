@@ -21,7 +21,7 @@ def query_executor(query: str,database:str):
             - For errors: A dictionary containing the error message.
     """
     try:
-        d = DatabaseConnect.DatabaseConnection("root", "Alliswell#1906", "127.0.0.1", "3306", "mysql")
+        d = DatabaseConnect.DatabaseConnection("root", "Alliswell#1906", "127.0.0.1", "3306", "mysql","")
         query = query.replace('\\', '')
  
         result = d.execute_query(query=query, database_name=database)
