@@ -1,9 +1,12 @@
 from  mysql.connector import connect
 from config.settings import AppSettings
+Appsettings = AppSettings()
 def get_db_connection():
     return connect(
-        host=AppSettings.DB_HOST,
-        user=AppSettings.DB_USER,
-        password=AppSettings.DB_PASSWORD,
-        database=AppSettings.DB_NAME
+        host=Appsettings.DB_HOST,
+        user=Appsettings.DB_USER,
+        password=Appsettings.DB_PASSWORD,
+        database=Appsettings.DB_NAME_CHATHISTORY
     )
+if __name__ == '__main__':
+    get_db_connection()

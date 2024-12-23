@@ -4,9 +4,12 @@ from langchain_core.tools import tool
 from Database import DatabaseConnect
 from core.llm_manager import LLMManger
 from Prompt.prompt_loader import PromptLoader
+from config.settings import AppSettings
+
+AppSettings = AppSettings()
 
 
-conn = DatabaseConnect.DatabaseConnection("root", "Alliswell#1906", "127.0.0.1", "3306", "mysql","")
+conn = DatabaseConnect.DatabaseConnection(AppSettings.DB_USER, AppSettings.DB_PASSWORD,AppSettings.DB_HOST,AppSettings.DB_PORT_NUMBER, AppSettings.DB_DIALECT,AppSettings.DB_NAME)
 res = conn.get_all_databases_metadata()
 llm = LLMManger()
 
@@ -69,3 +72,5 @@ def query_generator(user_query: str):
     except Exception as e:
         return {"error": str(e), "user_query": user_query, "messages": [str(e)]}
  
+if __name__ == '__main__':
+    query_generator('how many departments are present')

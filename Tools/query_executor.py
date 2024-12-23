@@ -1,6 +1,7 @@
 from langchain_core.tools import tool
 from Database import DatabaseConnect
-
+from config.settings import AppSettings
+AppSettings = AppSettings()
 
 @tool
 def query_executor(query: str,database:str):
@@ -21,7 +22,7 @@ def query_executor(query: str,database:str):
             - For errors: A dictionary containing the error message.
     """
     try:
-        d = DatabaseConnect.DatabaseConnection("root", "Alliswell#1906", "127.0.0.1", "3306", "mysql","")
+        d = DatabaseConnect.DatabaseConnection(AppSettings.DB_USER, AppSettings.DB_PASSWORD,AppSettings.DB_HOST,AppSettings.DB_PORT_NUMBER, AppSettings.DB_DIALECT,AppSettings.DB_NAME)
         query = query.replace('\\', '')
  
         result = d.execute_query(query=query, database_name=database)
@@ -42,3 +43,6 @@ def query_executor(query: str,database:str):
             'query': query,
             'error': f"An error occurred: {str(e)}"
         }
+    
+if __name__ == '__main__':
+    print(query_executor('SELECT COUNT(*) AS Number_of_Departments FROM departments;','employees'))

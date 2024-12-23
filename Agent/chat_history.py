@@ -5,18 +5,16 @@ from core.llm_manager import LLMManger
 from Prompt.prompt_loader import PromptLoader
 
 
-llm=LLMManger()
+llm = LLMManger()
 
 class ChatHistory:
-    def __init__(self, host, user, password, database):
+    def __init__(self, conn):
         try:
-            self.conn = mysql.connector.connect(
-                host=host,
-                user=user,
-                password=password,
-                database=database
-            )
-            self.cursor = self.conn.cursor(dictionary=True)
+            if conn.is_connected():
+                self.conn = conn
+                self.cursor = self.conn.cursor(dictionary=True)
+            else:
+                raise Exception("Connection is not valid")
         except mysql.connector.Error as err:
             raise Exception(f"Error connecting to MySQL: {err}")
 
@@ -72,7 +70,7 @@ class ChatHistory:
             system_message = PromptLoader().get_prompt("chat_history_system_prompt")
             messages = [{"role": "user", "content": input_message}]
             raw_output = llm.invoke([{"role": "system", "content": system_message}] + messages)
-            output = raw_output.content.strip().replace("'''", "").replace("json", "").replace("```", "")
+            output = raw_output.content.strip().replace("'''", "").replace("json", "").replace("\n", "")
 
             result = {"ans_type": "events", "details": {}}
             try:

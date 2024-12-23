@@ -5,12 +5,14 @@ class AppSettings(BaseSettings):
     DB_HOST: str
     DB_USER: str
     DB_PASSWORD: str
+    DB_NAME_CHATHISTORY: str
+    DB_DIALECT: str
     DB_NAME: str
     DB_PORT_NUMBER:str
    
     model_config = SettingsConfigDict(
-        env_file=".env",    # Path to the `.env` file.
-        extra="ignore"      # Ignore extra environment variables not listed here.
+        env_file="C:/Users/bhanu/OneDrive/Documents/Desktop/sql_git/SqlAgent/.env",  
+        extra="ignore"  
     )
  
 # Initialize settings

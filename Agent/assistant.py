@@ -5,13 +5,14 @@ from Tools.query_executor import query_executor
 from Tools.query_generator_tool import query_generator
 from Prompt.prompt_loader import PromptLoader
 from langchain_core.messages import HumanMessage
-from Database.database_utils import AppSettings
+from Database import database_utils
  
 llm = LLMManger()
  
 def assistant(state: State):
     user_id=1234
-    chat = ChatHistory(host="localhost", user="root", password="Alliswell#1906", database="events_for_redis")
+    conn = database_utils.get_db_connection()
+    chat = ChatHistory(conn)
     previous_conversations = chat.fetch_previous_conversations(user_id)    
     user_details = previous_conversations[0] if isinstance(previous_conversations[0], dict) else {}
     previous_messages = previous_conversations[1] if isinstance(previous_conversations[1], list) else []
