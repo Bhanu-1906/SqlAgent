@@ -11,7 +11,7 @@ class AppSettings(BaseSettings):
     DB_PORT_NUMBER:str
    
     model_config = SettingsConfigDict(
-        env_file="C:/Users/bhanu/OneDrive/Documents/Desktop/sql_git/SqlAgent/.env",  
+        env_file=".env",  
         extra="ignore"  
     )
  
