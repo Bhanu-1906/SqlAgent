@@ -46,7 +46,7 @@ def assistant(state: State):
     except Exception as e:
         raise RuntimeError("Error invoking LLM:") from e
  
-    chat.insert(user_id, input_message, final_response.content, state)
+    chat.insert(user_id, input_message, final_response.content)
  
     return {'messages':[llm_with_tool.invoke([system_message] + state['messages'])]}
  
