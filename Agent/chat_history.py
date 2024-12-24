@@ -57,7 +57,7 @@ class ChatHistory:
             chat_history = self.cursor.fetchall()
 
             chat_list = [
-                {'role': 'bot' if row['is_bot'] else 'user', 'content': row['message']}
+                {'role': 'assistant' if row['is_bot'] else 'human', 'content': row['message']}
                 for row in chat_history
             ]
 
@@ -69,7 +69,7 @@ class ChatHistory:
     def insert(self, user_id: str, input_message: str, final_response_content: str):
         try:
             system_message = PromptLoader().get_prompt("chat_history_system_prompt")
-            messages = [{"role": "user", "content": input_message}]
+            messages = [{"role": "human", "content": input_message}]
             raw_output = llm.invoke([{"role": "system", "content": system_message}] + messages)
             output = raw_output.content.strip().replace("'''", "").replace("json", "").replace("\n", "")
 
@@ -145,3 +145,8 @@ class ChatHistory:
         if self.conn.is_connected():
             self.cursor.close()
             self.conn.close()
+if __name__ == '__main__':
+    conn = database_utils.get_db_connection()
+    chat = ChatHistory(conn)
+    # print(chat.insert('1234','i like veggies','superb!'))
+    print(chat.fetch_previous_conversations('1234'))
