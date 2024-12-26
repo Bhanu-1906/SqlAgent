@@ -48,6 +48,6 @@ def assistant(state: State):
  
     chat.insert(user_id, input_message, final_response.content)
  
-    return {'messages':[llm_with_tool.invoke([system_message] + state['messages'])]}
+    return {'messages':final_response}
  
  
