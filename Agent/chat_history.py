@@ -54,12 +54,16 @@ class ChatHistory:
             chat_history = self.cursor.fetchall()
 
             chat_list = [
-                {'role': 'assistant' if row['is_bot'] else 'human', 'content': row['message']}
-                for row in chat_history
+                {'role': 'assistant' if row['is_bot'] else 'user', 'content': row['message']}
+                for row in reversed(chat_history)  
             ]
-            chat_list.reverse()
+            events_list = [
+                {'role': msg['role'], 'content': msg['content']}  
+                for msg in chat_list
+            ]
+            
 
-            return [user_details, chat_list]
+            return [user_details, events_list]
 
         except mysql.connector.Error as err:
             return f"Error fetching data from MySQL: {err}"
@@ -104,7 +108,7 @@ class ChatHistory:
                         user_id
                     ))
                 else:
-                    # Insert new user details
+                   
                     insert_query = """
                         INSERT INTO user_details (user_id, likes, dislikes, age)
                         VALUES (%s, %s, %s, %s)
