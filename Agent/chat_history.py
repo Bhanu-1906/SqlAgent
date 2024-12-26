@@ -20,7 +20,6 @@ class ChatHistory:
 
     def fetch_previous_conversations(self, user_id: str):
         try:
-            # Fetch user details
             user_query = """
                 SELECT users.user_name AS name, user_details.likes, user_details.dislikes, user_details.age
                 FROM user_details
@@ -44,14 +43,12 @@ class ChatHistory:
                 'dislikes': f"({dislikes})" if dislikes != 'none' else dislikes,
                 'age': age
             }
-
-            # Fetch recent chat history
             chat_query = """
                 SELECT message, is_bot, created_at
                 FROM chat_history
                 WHERE user_id = %s
                 ORDER BY created_at DESC
-                LIMIT 5
+                LIMIT 10
             """
             self.cursor.execute(chat_query, (user_id,))
             chat_history = self.cursor.fetchall()
@@ -60,6 +57,7 @@ class ChatHistory:
                 {'role': 'assistant' if row['is_bot'] else 'human', 'content': row['message']}
                 for row in chat_history
             ]
+            chat_list.reverse()
 
             return [user_details, chat_list]
 
@@ -81,20 +79,16 @@ class ChatHistory:
                     result["details"] = detected_info
             except (ValueError, SyntaxError):
                 result["details"] = {"message": output}
-
-            # Ensure user_name is always fetched from users table
             self.cursor.execute("SELECT user_name FROM users WHERE id = %s", (user_id,))
             user_record = self.cursor.fetchone()
             user_name = user_record['user_name'] if user_record else 'N/A'
-
-            # Insert or update user details
+            
             if result.get('ans_type') == "personal_details":
                 details = result.get('details', {})
                 self.cursor.execute("SELECT * FROM user_details WHERE user_id = %s", (user_id,))
                 existing_data = self.cursor.fetchone()
 
                 if existing_data:
-                    # Update existing details
                     updated_likes = (existing_data['likes'] or '') + ', ' + details.get('likes', '')
                     updated_dislikes = (existing_data['dislikes'] or '') + ', ' + details.get('dislikes', '')
 
@@ -122,18 +116,19 @@ class ChatHistory:
                         details.get('age', None)
                     ))
 
-            else:  # Insert chat history only if not personal details
-                chat_query = """
-                    INSERT INTO chat_history (user_id, message, is_bot, created_at)
-                    VALUES (%s, %s, %s, %s)
-                """
-                self.cursor.execute(chat_query, (user_id, input_message, 0, datetime.now()))
-
-                bot_response_query = """
-                    INSERT INTO chat_history (user_id, message, is_bot, created_at)
-                    VALUES (%s, %s, %s, %s)
-                """
-                self.cursor.execute(bot_response_query, (user_id, final_response_content, 1, datetime.now()))
+            else: 
+                if input_message.strip():  
+                    chat_query = """
+                        INSERT INTO chat_history (user_id, message, is_bot, created_at)
+                        VALUES (%s, %s, %s, %s)
+                    """
+                    self.cursor.execute(chat_query, (user_id, input_message, 0, datetime.now()))
+                if final_response_content.strip():  
+                    bot_response_query = """
+                        INSERT INTO chat_history (user_id, message, is_bot, created_at)
+                        VALUES (%s, %s, %s, %s)
+                    """
+                    self.cursor.execute(bot_response_query, (user_id, final_response_content, 1, datetime.now()))
 
             self.conn.commit()
             return "Data inserted successfully."
@@ -145,8 +140,3 @@ class ChatHistory:
         if self.conn.is_connected():
             self.cursor.close()
             self.conn.close()
-if __name__ == '__main__':
-    conn = database_utils.get_db_connection()
-    chat = ChatHistory(conn)
-    # print(chat.insert('1234','i like veggies','superb!'))
-    print(chat.fetch_previous_conversations('1234'))
